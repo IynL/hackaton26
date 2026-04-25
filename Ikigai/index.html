@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ikig.ai — Профориентация и Навыки</title>
+    <meta name="description" content="Ikig.ai — умный AI-навигатор в мир IT-профессий. Найди своё призвание, выстрой финансовый маршрут и упакуй портфолио с помощью Хоши-AI.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen" class="auth-overlay">
+    <div class="auth-card">
+        <div class="auth-logo logo">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <defs><linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6d28d9" /><stop offset="100%" stop-color="#a855f7" /></linearGradient></defs>
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="url(#grad2)"></polygon>
+            </svg>
+            Ikig.ai
+        </div>
+        <div class="auth-tagline">Твой путь · Твой смысл · Твой AI</div>
+        <div class="auth-tabs">
+            <button class="nav-btn auth-tab active" data-auth="login">Вход</button>
+            <button class="nav-btn auth-tab" data-auth="register">Регистрация</button>
+        </div>
+        <form id="authForm" class="field-group">
+            <div id="nameGroup" class="field-group" style="display:none; margin-bottom:12px;">
+                <label>Имя</label>
+                <input type="text" id="authName" placeholder="Арман">
+            </div>
+            <div class="field-group" style="margin-bottom:12px;">
+                <label>Email</label>
+                <input type="email" id="authEmail" placeholder="arman@mail.ru" required>
+            </div>
+            <div class="field-group" style="margin-bottom:20px;">
+                <label>Пароль</label>
+                <input type="password" id="authPassword" placeholder="••••••••" required>
+            </div>
+            <div id="authError" style="color:var(--danger); font-size:0.85rem; margin-bottom:10px; display:none;"></div>
+            <button type="submit" id="authSubmitBtn" class="btn-primary full-width">Войти</button>
+        </form>
+        <div class="auth-secure" style="font-size:0.8rem; color:var(--text2);">
+            🔒 Данные защищены и сохраняются на сервере SQLite.
+        </div>
+    </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="appContainer" style="display:none; opacity:0; transition: opacity 0.5s ease;">
+    <!-- ====== HEADER ====== -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6d28d9" /><stop offset="100%" stop-color="#a855f7" /></linearGradient></defs>
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="url(#grad)"></polygon>
+                </svg>
+                Ikig.ai
+            </div>
+
+            <nav class="nav">
+                <button class="nav-btn active" data-target="dashboard">Дашборд</button>
+                <button class="nav-btn" data-target="proftest">Навигатор</button>
+                <button class="nav-btn" data-target="finance">Финансы</button>
+                <button class="nav-btn" data-target="portfolio">Портфолио</button>
+                <button class="nav-btn" data-target="mentor">Хоши-AI</button>
+                <button class="nav-btn" data-target="quests">Задания</button>
+                <button class="nav-btn" data-target="shop">Магазин</button>
+            </nav>
+
+            <div class="header-right">
+                <div class="streak-display" id="streakDisplay" style="display:flex; align-items:center; gap:5px; color:var(--accent-amber); font-weight:700; font-size:.9rem;" title="Ежедневный вход">
+                    🔥 <span id="streakCount">0</span>
+                </div>
+                <div class="coins-display" id="coinBalance">
+                    <svg width="16" height="16" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v12M8 10h8M8 14h8" stroke="#fff" stroke-width="2"></path></svg>
+                    <span id="coinCount">0</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle">
+                    <svg id="iconDark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg id="iconLight" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+                <div id="openProfileBtn" style="display:flex; align-items:center; gap:10px; cursor:pointer; padding:5px; border-radius:8px; transition:background 0.2s;">
+                    <div class="avatar" id="headerAvatar">?</div>
+                    <span class="username" id="headerUserName">...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- ====== DASHBOARD ====== -->
+        <section id="dashboard" class="tab active">
+            <div class="dash-grid">
+                <div class="col-left">
+                    <div class="card premium-card hero-card">
+                        <span class="tag">Ikig.ai 3.0</span>
+                        <h1>3 шага к <span class="gradient-text">твоему будущему</span> в IT</h1>
+                        <p style="margin-bottom:20px;">Наш инструмент бесшовно проведет тебя по трем точкам:</p>
+                        <div style="display:flex; flex-direction:column; gap:12px;">
+                            <button class="btn-secondary" style="text-align:left; justify-content:flex-start;" onclick="document.querySelector('[data-target=proftest]').click()">1. Осознанный выбор профессии (Навигатор) ➔</button>
+                            <button class="btn-secondary" style="text-align:left; justify-content:flex-start;" onclick="document.querySelector('[data-target=finance]').click()">2. Поиск финансового маршрута ➔</button>
+                            <button class="btn-secondary" style="text-align:left; justify-content:flex-start;" onclick="document.querySelector('[data-target=portfolio]').click()">3. Упаковка талантов и достижений ➔</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-right">
+                    <div class="card">
+                        <div class="card-title">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                            Статистика рынка (hh.kz)
+                        </div>
+                        <div class="card-subtitle">Живые данные по открытым вакансиям в РК</div>
+                        <div class="stats-row" style="grid-template-columns: 1fr;">
+                            <div>
+                                <div class="stat-icon purple">💼</div>
+                                <div class="stat-num" id="hhCount" style="font-size:1.8rem;">---</div>
+                                <div class="finance-label" id="hhTitle">Загрузка данных...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Твои финансы</div>
+                        <div class="finance-row">
+                            <span class="finance-label">Доходы</span>
+                            <span class="finance-pos" id="dashTotalIncome">0 ₸</span>
+                        </div>
+                        <div class="finance-row">
+                            <span class="finance-label">Расходы</span>
+                            <span class="finance-neg" id="dashTotalExpenses">0 ₸</span>
+                        </div>
+                        <div class="finance-bar"><div class="finance-bar-fill" id="dashFinanceBar" style="width:0%"></div></div>
+                        <div class="finance-note" id="dashFinanceNote">Загрузка данных...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== FINANCE WALLET ====== -->
+        <section id="finance" class="tab">
+            <div class="wallet-page">
+
+                <!-- Header + month nav -->
+                <div class="wallet-header">
+                    <div>
+                        <h2 class="wallet-title">💳 Мой кошелёк</h2>
+                        <p style="color:var(--text2); font-size:.95rem;">Доходы, расходы и статистика по месяцам</p>
+                    </div>
+                    <div class="month-nav">
+                        <button id="prevMonthBtn" class="btn-ghost" title="Предыдущий месяц">‹</button>
+                        <span id="currentMonthLabel" style="font-weight:700; font-size:1rem; min-width:140px; text-align:center;"></span>
+                        <button id="nextMonthBtn" class="btn-ghost" title="Следующий месяц">›</button>
+                    </div>
+                </div>
+
+                <!-- Top 4 stat cards -->
+                <div class="wallet-stats">
+                    <div class="wallet-stat-card income-card">
+                        <div class="wstat-icon">📥</div>
+                        <div class="wstat-value" id="wTotalIncome">0 ₸</div>
+                        <div class="wstat-label">Доходы</div>
+                        <div class="wstat-diff" id="wIncomeDiff"></div>
+                    </div>
+                    <div class="wallet-stat-card expense-card">
+                        <div class="wstat-icon">📤</div>
+                        <div class="wstat-value" id="wTotalExpenses">0 ₸</div>
+                        <div class="wstat-label">Расходы</div>
+                        <div class="wstat-diff" id="wExpensesDiff"></div>
+                    </div>
+                    <div class="wallet-stat-card balance-card">
+                        <div class="wstat-icon">💰</div>
+                        <div class="wstat-value" id="wBalance">0 ₸</div>
+                        <div class="wstat-label">Остаток</div>
+                        <div id="wBalanceBar">
+                            <div class="mini-bar"><div class="mini-bar-fill" id="wBalanceFill" style="width:0%"></div></div>
+                        </div>
+                    </div>
+                    <div class="wallet-stat-card daily-card">
+                        <div class="wstat-icon">📅</div>
+                        <div class="wstat-value" id="wDailyLimit">0 ₸</div>
+                        <div class="wstat-label">Можно тратить в день</div>
+                        <div id="wDaysLeft" style="font-size:.8rem; color:var(--text2); margin-top:4px;"></div>
+                    </div>
+                </div>
+
+                <!-- Two columns: income + expenses -->
+                <div class="wallet-cols">
+
+                    <!-- INCOME -->
+                    <div class="card wallet-col">
+                        <div class="wallet-col-header">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="font-size:1.3rem;">📥</span>
+                                <h3 style="font-size:1.1rem; font-weight:700;">Доходы</h3>
+                            </div>
+                            <button id="addIncomeBtn" class="btn-primary" style="padding:8px 16px; font-size:.85rem;">+ Добавить</button>
+                        </div>
+                        <div id="addIncomeForm" class="wallet-form" style="display:none;">
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                                <div class="field-group" style="margin:0;">
+                                    <label>Источник</label>
+                                    <select id="incomeSource">
+                                        <option value="salary">💼 Зарплата</option>
+                                        <option value="stipend">🎓 Стипендия</option>
+                                        <option value="freelance">💻 Фриланс</option>
+                                        <option value="parents">👨‍👩‍👧 Помощь родителей</option>
+                                        <option value="grant">🏆 Грант/Болашак</option>
+                                        <option value="other">✨ Другое</option>
+                                    </select>
+                                </div>
+                                <div class="field-group" style="margin:0;">
+                                    <label>Сумма (₸)</label>
+                                    <input type="number" id="incomeAmount" placeholder="50000" min="1">
+                                </div>
+                            </div>
+                            <div class="field-group" style="margin-bottom:10px;">
+                                <label>Заметка (необязательно)</label>
+                                <input type="text" id="incomeNote" placeholder="Например: аванс за апрель">
+                            </div>
+                            <div style="display:flex; gap:8px;">
+                                <button id="saveIncomeBtn" class="btn-primary" style="padding:10px 20px; font-size:.9rem; flex:1;">Сохранить</button>
+                                <button id="cancelIncomeBtn" class="btn-secondary" style="padding:10px 16px; font-size:.9rem;">Отмена</button>
+                            </div>
+                        </div>
+                        <div id="incomeList" class="wallet-list">
+                            <div class="wallet-empty">Нет доходов за этот месяц</div>
+                        </div>
+                    </div>
+
+                    <!-- EXPENSES -->
+                    <div class="card wallet-col">
+                        <div class="wallet-col-header">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="font-size:1.3rem;">📤</span>
+                                <h3 style="font-size:1.1rem; font-weight:700;">Расходы</h3>
+                            </div>
+                            <button id="addExpenseBtn" class="btn-primary" style="padding:8px 16px; font-size:.85rem;">+ Добавить</button>
+                        </div>
+                        <div id="addExpenseForm" class="wallet-form" style="display:none;">
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                                <div class="field-group" style="margin:0;">
+                                    <label>Категория</label>
+                                    <select id="expenseCategory">
+                                        <option value="food">🍔 Еда</option>
+                                        <option value="transport">🚌 Транспорт</option>
+                                        <option value="rent">🏠 Аренда/Жильё</option>
+                                        <option value="education">📚 Учёба/Курсы</option>
+                                        <option value="entertainment">🎮 Развлечения</option>
+                                        <option value="clothes">👕 Одежда</option>
+                                        <option value="health">💊 Здоровье</option>
+                                        <option value="subscriptions">📱 Подписки</option>
+                                        <option value="other">📦 Другое</option>
+                                    </select>
+                                </div>
+                                <div class="field-group" style="margin:0;">
+                                    <label>Сумма (₸)</label>
+                                    <input type="number" id="expenseAmount" placeholder="2500" min="1">
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                                <div class="field-group" style="margin:0;">
+                                    <label>Описание</label>
+                                    <input type="text" id="expenseDesc" placeholder="Кафе у универа">
+                                </div>
+                                <div class="field-group" style="margin:0;">
+                                    <label>Дата</label>
+                                    <input type="date" id="expenseDate">
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:8px;">
+                                <button id="saveExpenseBtn" class="btn-primary" style="padding:10px 20px; font-size:.9rem; flex:1;">Сохранить</button>
+                                <button id="cancelExpenseBtn" class="btn-secondary" style="padding:10px 16px; font-size:.9rem;">Отмена</button>
+                            </div>
+                        </div>
+                        <div id="expenseList" class="wallet-list">
+                            <div class="wallet-empty">Нет расходов за этот месяц</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category breakdown + AI advisor -->
+                <div class="card" style="margin-top:0;">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+                        <h3 style="font-size:1.1rem; font-weight:700;">📊 Расходы по категориям</h3>
+                        <button id="calcFinanceBtn" class="btn-outline-sm">🤖 AI-анализ бюджета</button>
+                    </div>
+                    <div id="categoryBreakdown" class="category-bars"></div>
+                    <div id="financeResult" style="display:none; margin-top:20px; background:var(--surface-hover); padding:20px; border-radius:16px;"></div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ====== PORTFOLIO BUILDER ====== -->
+        <section id="portfolio" class="tab">
+            <div class="card" style="max-width:800px; margin:0 auto;">
+                <h2 style="font-size:1.8rem; margin-bottom:10px;">Упаковка Портфолио 🏆</h2>
+                <p style="color:var(--text2); margin-bottom:24px;">Преврати свои школьные увлечения и награды в мощное резюме корпоративного уровня.</p>
+                
+                <div class="field-group" style="margin-bottom:16px;">
+                    <label>Твои достижения и олимпиады</label>
+                    <textarea id="portfOlimp" rows="2" placeholder="Например: 2 место по физике в школе..."></textarea>
+                </div>
+                <div class="field-group" style="margin-bottom:16px;">
+                    <label>Волонтерство / Проекты</label>
+                    <textarea id="portfVolun" rows="2" placeholder="Например: Помогал приюту, староста класса..."></textarea>
+                </div>
+                <div class="field-group" style="margin-bottom:20px;">
+                    <label>Хобби (даже игры)</label>
+                    <textarea id="portfHobby" rows="2" placeholder="Например: Играю в Доту, монтирую видео для ТикТока..."></textarea>
+                </div>
+                <button id="buildPortfolioBtn" class="btn-primary large" style="width:100%; margin-bottom:24px;">🪄 Упаковать через ИИ</button>
+
+                <div id="portfolioResult" style="display:none; text-align:left; background:var(--surface-hover); padding:20px; border-radius:16px;"></div>
+            </div>
+        </section>
+
+        <!-- ====== PROFTEST & ROADMAP ====== -->
+        <section id="proftest" class="tab">
+            <div class="test-wrap card">
+                
+                <div id="testStart" class="test-screen active">
+                    <div class="test-emoji">🎯</div>
+                    <h2 style="font-size:2rem; margin-bottom:12px;">Профориентация</h2>
+                    <p style="color:var(--text2); margin-bottom:24px; font-size:1.05rem;">Ответь на 9 простых вопросов, и мы подберем для тебя идеальную IT-профессию.</p>
+                    <button id="startTestBtn" class="btn-primary large">Начать тест</button>
+                </div>
+
+                <div id="testQuiz" class="test-screen">
+                    <div class="progress-bar"><div id="progressFill" style="width:10%"></div></div>
+                    <div id="qCounter" style="color:var(--text2); font-weight:600; margin-bottom:8px; font-size:.9rem; text-align:left;">Вопрос 1 из 9</div>
+                    <h3 id="questionText">Вопрос...</h3>
+                    <div class="options-grid" id="optionsGrid"></div>
+                </div>
+
+                <div id="testResult" class="test-screen">
+                    <div class="test-emoji">✨</div>
+                    <h2 style="font-size:2rem; margin-bottom:12px;">Твой результат готов!</h2>
+                    <p style="color:var(--text2); margin-bottom:24px;">Хоши-AI уже пишет для тебя подробный разбор.</p>
+                    <button id="generateRoadmapBtn" class="btn-primary" style="margin-bottom:20px; display:none;">Сгенерировать Roadmap</button>
+                    <div id="roadmapContainer" style="display:none; text-align:left; background:var(--surface-hover); padding:20px; border-radius:16px; margin-top:20px;"></div>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- ====== MENTOR CHAT ====== -->
+        <section id="mentor" class="tab">
+            <div class="dash-grid" style="grid-template-columns: 280px 1fr; height: calc(100vh - 140px);">
+                <!-- Сайдбар чатов -->
+                <div class="card" style="padding:0; display:flex; flex-direction:column;">
+                    <div style="padding:16px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                        <h4 style="font-size:1rem;">История чатов</h4>
+                        <button id="newChatBtn" class="btn-ghost" title="Новый чат">➕</button>
+                    </div>
+                    <div id="chatList" style="flex:1; overflow-y:auto; padding:10px; display:flex; flex-direction:column; gap:4px;">
+                        <!-- чаты -->
+                    </div>
+                </div>
+
+                <!-- Окно чата -->
+                <div class="card chat-card">
+                    <div class="chat-top">
+                        <div class="mentor-meta">
+                            <div class="online-dot"></div>
+                            <div>
+                                <div class="mentor-name">Хоши-AI</div>
+                                <div style="font-size:.8rem; color:var(--text2)">Готова ответить на вопросы ✦</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button id="interviewModeBtn" class="btn-outline-sm" title="ИИ задает вопросы">Включить Mock Interview</button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Messages -->
+                        <div class="typing-indicator" id="typingIndicator" style="display:none">
+                            <div class="msg-ava">✦</div>
+                            <div class="msg-text typing"><span></span><span></span><span></span></div>
+                        </div>
+                    </div>
+
+                    <!-- Image Preview -->
+                    <div id="imagePreviewContainer" style="display:none; padding:10px 28px; background:var(--surface-hover); border-top:1px solid var(--border);">
+                        <div style="position:relative; display:inline-block;">
+                            <img id="imagePreview" src="" style="height:60px; border-radius:8px; border:1px solid var(--border);">
+                            <button id="removeImageBtn" style="position:absolute; top:-5px; right:-5px; background:var(--danger); color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer; font-size:12px;">✕</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-input">
+                        <label for="imageUpload" style="cursor:pointer; display:flex; align-items:center; justify-content:center; width:50px; height:50px; border-radius:50%; background:var(--surface); border:1px solid var(--border); color:var(--text2); transition:all 0.3s;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                        </label>
+                        <input type="file" id="imageUpload" accept="image/*" style="display:none;">
+                        
+                        <input type="text" id="userInput" placeholder="Напиши вопрос или отправь фото резюме...">
+                        <button id="sendBtn" class="send-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== QUESTS ====== -->
+        <section id="quests" class="tab">
+            <div class="quests-page">
+                <div class="page-header">
+                    <h2>Ежедневные задания</h2>
+                    <p>Выполняй задания, зарабатывай монеты и трать их в магазине на курсы и пробники.</p>
+                </div>
+                <div class="quests-grid" id="questsContainer"></div>
+            </div>
+        </section>
+
+        <!-- ====== SHOP ====== -->
+        <section id="shop" class="tab">
+            <div class="shop-page">
+                <div class="page-header">
+                    <h2>Магазин</h2>
+                    <p>Тратить монеты на курсы, пробники и дополнительные материалы.</p>
+                    <div class="shop-balance">Твой баланс: <strong id="shopCoinDisplay">0</strong> 🪙</div>
+                </div>
+                <div class="shop-grid" id="shopContainer"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="footer">
+        <p><strong>Ikig.ai</strong> — Твой навигатор в мир IT-профессий Казахстана.</p>
+        <p>© 2026 Hackathon Prototype. Работает на Node.js Backend + Хоши-AI.</p>
+    </footer>
+</div> <!-- End of appContainer -->
+
+<!-- QUEST MODAL -->
+<div id="questModal" class="modal-overlay" style="display:none">
+    <div class="modal-card card">
+        <div class="modal-head">
+            <h3 id="modalTitle">Задание</h3>
+            <button id="modalClose" class="btn-ghost">✕</button>
+        </div>
+        <div id="modalBody" class="modal-body"></div>
+        <div class="modal-foot">
+            <button id="modalComplete" class="btn-primary">Готово — получить монеты</button>
+        </div>
+    </div>
+</div>
+
+<!-- SHOP MODAL (confirm buy) -->
+<div id="shopModal" class="modal-overlay" style="display:none">
+    <div class="modal-card card">
+        <div class="modal-head">
+            <h3 id="shopModalTitle">Покупка</h3>
+            <button id="shopModalClose" class="btn-ghost">✕</button>
+        </div>
+        <div id="shopModalBody" class="modal-body"></div>
+        <div class="modal-foot">
+            <button id="shopModalCancel" class="btn-secondary">Отмена</button>
+            <button id="shopModalConfirm" class="btn-primary">Купить</button>
+        </div>
+    </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div id="profileModal" class="modal-overlay" style="display:none">
+    <div class="modal-card card">
+        <div class="modal-head">
+            <h3>Профиль пользователя</h3>
+            <button id="profileModalClose" class="btn-ghost">✕</button>
+        </div>
+        <div id="profileModalBody" class="modal-body" style="display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; align-items:center; gap:16px; margin-bottom:10px;">
+                <input type="file" id="avatarUpload" accept="image/*" style="display:none">
+                <div class="avatar" id="profAvatar" style="width:60px; height:60px; font-size:24px; cursor:pointer; position:relative;" title="Сменить аватар" onclick="document.getElementById('avatarUpload').click()">?</div>
+                <div>
+                    <h2 id="profName" style="margin-bottom:4px;">Имя</h2>
+                    <div id="profEmail" style="color:var(--text2); font-size:0.9rem;">email</div>
+                </div>
+            </div>
+            <div class="stats-row" style="grid-template-columns: 1fr 1fr;">
+                <div>
+                    <div class="stat-icon amber">🪙</div>
+                    <div class="stat-num" id="profCoins">0</div>
+                    <div class="finance-label">Монет</div>
+                </div>
+                <div>
+                    <div class="stat-icon purple">🔥</div>
+                    <div class="stat-num" id="profStreak">0</div>
+                    <div class="finance-label">Стрик (дней)</div>
+                </div>
+            </div>
+            <p style="margin-top:10px;">Выполнено заданий: <strong id="profQuests">0</strong></p>
+            <p>Куплено в магазине: <strong id="profShop">0</strong></p>
+        </div>
+        <div class="modal-foot">
+            <button id="profileLogoutBtn" class="btn-secondary" style="color:var(--danger); border-color:var(--danger);">Выйти из аккаунта</button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

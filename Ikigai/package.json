@@ -1,0 +1,21 @@
+{
+  "name": "ikig-ai",
+  "version": "1.0.0",
+  "description": "Ikig.ai — AI-powered career navigator by Хоши-AI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["ai", "career", "ikigai", "kazakhstan"],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "groq-sdk": "^1.1.2",
+    "sqlite3": "^6.0.1"
+  }
+}
