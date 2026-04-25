@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNav — Твой компас в будущее</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="authScreen" class="auth-overlay">
+        <div class="auth-card premium-card">
+            <div class="auth-header">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <h2>Вход в систему</h2>
+                <p class="auth-subtitle">Безопасное и конфиденциальное подключение</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-auth="login">Вход</button>
+                <button class="auth-tab" data-auth="register">Регистрация</button>
+            </div>
+
+            <form id="authForm" class="auth-form">
+                <div class="input-group" id="nameGroup" style="display: none;">
+                    <label>Ваше имя</label>
+                    <input type="text" id="authName" placeholder="Например, Арман" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="authEmail" placeholder="name@example.com" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label>Пароль (зашифровано)</label>
+                    <input type="password" id="authPassword" placeholder="••••••••" required>
+                </div>
+                <div id="authError" class="auth-error"></div>
+                <button type="submit" class="glow-btn auth-submit-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                    <span id="authBtnText">Войти</span>
+                </button>
+            </form>
+            
+            <div class="auth-footer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>End-to-End Encrypted Simulation</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER (Hidden by default) -->
+    <div id="appContainer" style="display: none;">
+        <!-- Header Navigation -->
+        <header class="app-header">
+        <div class="header-content">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#3b82f6" />
+                            <stop offset="100%" stop-color="#8b5cf6" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+                <span>EduNav</span>
+            </div>
+            <nav class="nav-links">
+                <button class="nav-btn active" data-target="dashboard">Дашборд</button>
+                <button class="nav-btn" data-target="proftest">Профтест</button>
+                <button class="nav-btn" data-target="mentor">AI-Ментор</button>
+            </nav>
+            <div class="user-profile">
+                <div id="coinBalance" class="coin-badge">🪙 0</div>
+                <span id="headerUserName">Искатель</span>
+                <div class="avatar" id="headerAvatar">И</div>
+                <button id="logoutBtn" class="logout-btn" title="Выйти">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        
+        <!-- ================= TAB 1: DASHBOARD ================= -->
+        <section id="dashboard" class="tab-content active">
+            <div class="dashboard-grid">
+                
+                <div class="col-left">
+                    <div class="premium-card hero-card">
+                        <div class="badge">EduTech Innovation</div>
+                        <h1>Твоя карьера начинается <span class="text-gradient">здесь</span>.</h1>
+                        <p>Искусственный интеллект анализирует рынок труда Казахстана и твои сильные стороны, чтобы построить точный маршрут к успеху.</p>
+                        <button class="glow-btn hero-btn" onclick="document.querySelector('[data-target=\'proftest\']').click()">Пройти профтест</button>
+                    </div>
+
+                    <div class="premium-card smart-search-card">
+                        <div class="card-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <h2>Быстрый подбор профессии</h2>
+                        </div>
+                        <p class="subtitle">Введи свои интересы, и наш AI подберет тебе ВУЗ и гранты.</p>
+                        <div class="input-group">
+                            <textarea id="userInterests" placeholder="Чем ты любишь заниматься? (например: игры, рисование, математика)..."></textarea>
+                        </div>
+                        <div class="input-group">
+                            <textarea id="userAchievements" placeholder="Твои достижения? (например: олимпиады, кружки, спорт)..."></textarea>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <button id="analyzeBtn" class="solid-btn" style="flex: 1;">Подобрать профессию</button>
+                            <button id="generateCVBtn" class="outline-btn" style="flex: 1; border-color: var(--accent-purple); color: var(--accent-purple);">Сгенерировать Резюме</button>
+                        </div>
+                    </div>
+
+                    <!-- NEW WIDGET: Financial Route (Смета) -->
+                    <div class="premium-card finance-card" style="margin-top: 24px;">
+                        <div class="card-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
+                            <h2>Смета студента (Алматы)</h2>
+                        </div>
+                        <div class="finance-body" style="margin-top: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="color: var(--text-secondary);">Расходы (аренда, еда)</span>
+                                <span style="color: #ef4444; font-weight: bold;">- 180 000 ₸</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                <span style="color: var(--text-secondary);">Гос. стипендия</span>
+                                <span style="color: #10b981; font-weight: bold;">+ 41 898 ₸</span>
+                            </div>
+                            <div class="progress-track" style="height: 8px; margin-bottom: 10px;"><div class="progress-fill" style="width: 25%; background: #ef4444;"></div></div>
+                            <p style="font-size: 0.85rem; color: var(--text-secondary);">Дефицит бюджета: 138 000 ₸. <a href="#" style="color: var(--accent-blue);">Найти скрытые гранты и стажировки →</a></p>
+                        </div>
+                    </div>
+
+                    <!-- NEW WIDGET: Top Universities -->
+                    <div class="premium-card unis-card" style="margin-top: 24px;">
+                        <div class="card-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                            <h2>Топ ВУЗы (Кликабельно)</h2>
+                        </div>
+                        <div class="unis-grid">
+                            <a href="https://nu.edu.kz/admissions" target="_blank" class="uni-item">
+                                <div class="uni-icon" style="background: rgba(59,130,246,0.2); color:#3b82f6;">NU</div>
+                                <div class="uni-text">Назарбаев Университет ↗</div>
+                            </a>
+                            <a href="https://kbtu.edu.kz/ru/page/abiturientu" target="_blank" class="uni-item">
+                                <div class="uni-icon" style="background: rgba(139,92,246,0.2); color:#8b5cf6;">KB</div>
+                                <div class="uni-text">КБТУ — Абитуриентам ↗</div>
+                            </a>
+                            <a href="https://aitu.edu.kz/ru/admissions" target="_blank" class="uni-item">
+                                <div class="uni-icon" style="background: rgba(16,185,129,0.2); color:#10b981;">AI</div>
+                                <div class="uni-text">AITU — Astana IT ↗</div>
+                            </a>
+                            <a href="https://sdu.edu.kz/ru/applications" target="_blank" class="uni-item">
+                                <div class="uni-icon" style="background: rgba(236,72,153,0.2); color:#ec4899;">SD</div>
+                                <div class="uni-text">SDU — Приемная комиссия ↗</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-right">
+                    <div class="stats-row">
+                        <div class="premium-card stat-card">
+                            <div class="stat-icon purple"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Доступных грантов</div>
+                        </div>
+                        <div class="premium-card stat-card">
+                            <div class="stat-icon blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg></div>
+                            <div class="stat-value">80%</div>
+                            <div class="stat-label">Совпадение с IT</div>
+                        </div>
+                    </div>
+
+                    <div class="premium-card opportunities-card">
+                        <div class="card-header">
+                            <h2>🔥 Горячие возможности</h2>
+                        </div>
+                        <div class="opp-list">
+                            <div class="opp-item">
+                                <div class="opp-info">
+                                    <h3>Стипендия от KAZENERGY</h3>
+                                    <span>Дедлайн: через 3 дня</span>
+                                </div>
+                                <button class="outline-btn" onclick="window.open('https://kazenergy.com/ru/about/social-responsibility/scholarship/', '_blank')">Подать</button>
+                            </div>
+                            <div class="opp-item">
+                                <div class="opp-info">
+                                    <h3>Стажировка в Kolesa Group</h3>
+                                    <span>Подходит под твое резюме</span>
+                                </div>
+                                <button class="outline-btn" onclick="window.open('https://kolesa.kz/jobs', '_blank')">Изучить</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEW WIDGET: Skills Progress -->
+                    <div class="premium-card skills-card" style="margin-top: 24px;">
+                        <div class="card-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg>
+                            <h2>Твоя прокачка (Skills)</h2>
+                        </div>
+                        <div class="skills-list" style="margin-top: 15px; display: flex; flex-direction: column; gap: 15px;">
+                            <div class="skill-item">
+                                <div class="skill-header" style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px;"><span>Логика и Алгоритмы</span><span>30%</span></div>
+                                <div class="progress-track"><div class="progress-fill" style="width: 30%;"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header" style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px;"><span>Английский (IELTS)</span><span>50%</span></div>
+                                <div class="progress-track"><div class="progress-fill" style="width: 50%; background: var(--accent-purple);"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header" style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px;"><span>Лидерство (Волонтерство)</span><span>80%</span></div>
+                                <div class="progress-track"><div class="progress-fill" style="width: 80%; background: var(--accent-green);"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NEW WIDGET: Daily Quests (Gamification) -->
+                    <div class="premium-card quests-card" style="margin-top: 24px;">
+                        <div class="card-header" style="display: flex; justify-content: space-between; width: 100%;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <h2>Дейли Квесты</h2>
+                            </div>
+                            <div style="background: rgba(245,158,11,0.2); color: #f59e0b; padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 0.8rem;">
+                                150 EduCoins
+                            </div>
+                        </div>
+                        <div class="quests-list" style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                            <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4 style="font-size: 0.9rem; margin-bottom: 2px;">🧠 Решить задачу на логику</h4>
+                                    <span style="font-size: 0.75rem; color: var(--text-secondary);">Осталось 5 часов</span>
+                                </div>
+                                <button class="solid-btn" data-quest-id="logic" data-reward="50" style="padding: 6px 12px; font-size: 0.8rem;">+50 🪙</button>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4 style="font-size: 0.9rem; margin-bottom: 2px;">🏁 Пройти Профтест</h4>
+                                    <span style="font-size: 0.75rem; color: var(--text-secondary);">+100 монет за тест!</span>
+                                </div>
+                                <button class="outline-btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="document.querySelector('[data-target=\'proftest\']').click()">Перейти</button>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4 style="font-size: 0.9rem; margin-bottom: 2px;">🏦 Изучить 1 грант</h4>
+                                    <span style="font-size: 0.75rem; color: var(--text-secondary);">+30 монет</span>
+                                </div>
+                                <button class="solid-btn" data-quest-id="grant" data-reward="30" style="padding: 6px 12px; font-size: 0.8rem;">+30 🪙</button>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4 style="font-size: 0.9rem; margin-bottom: 2px;">🤖 Спросить ментора</h4>
+                                    <span style="font-size: 0.75rem; color: var(--text-secondary);">+20 монет</span>
+                                </div>
+                                <button class="solid-btn" data-quest-id="ask" data-reward="20" style="padding: 6px 12px; font-size: 0.8rem;" onclick="this.setAttribute('data-quest-id', 'ask'); document.querySelector('[data-target=\'mentor\']').click();">+20 🪙</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: PROFTEST ================= -->
+        <section id="proftest" class="tab-content">
+            <div class="test-container premium-card">
+                
+                <!-- Start Screen -->
+                <div id="testStartScreen" class="test-view active">
+                    <div class="icon-huge">🎯</div>
+                    <h2>Узнай, кто ты в мире IT</h2>
+                    <p>Пройди интерактивный тест за 2 минуты. Никаких скучных вопросов — только реальные ситуации. На основе твоих ответов ИИ подберет тебе профессию и грант.</p>
+                    <button id="startTestBtn" class="glow-btn large-btn">Начать тест</button>
+                </div>
+
+                <!-- Quiz Screen -->
+                <div id="testQuizScreen" class="test-view">
+                    <div class="progress-bar-container">
+                        <div class="progress-info">
+                            <span id="questionCounter">Вопрос 1 из 5</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="progressFill" class="progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="question-block">
+                        <h2 id="questionText">Представь, что тебе поручили создать новый продукт. С чего ты начнешь?</h2>
+                        
+                        <div id="optionsContainer" class="options-grid">
+                            <!-- Options injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result/Loading Screen -->
+                <div id="testResultScreen" class="test-view">
+                    <div class="loader">
+                        <div class="spinner"></div>
+                        <h3>AI анализирует твои ответы...</h3>
+                        <p>Подбираем топовые факультеты и стипендии.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: AI MENTOR ================= -->
+        <section id="mentor" class="tab-content">
+            <div class="premium-card chat-wrapper">
+                <div class="chat-header">
+                    <div class="mentor-info">
+                        <div class="status-dot"></div>
+                        <div>
+                            <h2>AI-Ментор «Агашка»</h2>
+                            <span class="status-text">Онлайн • llama-3.3-70b-versatile</span>
+                        </div>
+                    </div>
+                    <button class="icon-btn" title="Очистить историю" id="clearChatBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    </button>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message mentor">
+                        <div class="msg-avatar">🤖</div>
+                        <div class="msg-bubble">
+                            Салем! Я твой персональный AI-ментор. Готов помочь тебе с выбором профессии, подсказать крутые университеты и найти стипендии. Что тебя интересует?
+                        </div>
+                    </div>
+                    <div class="typing-indicator" id="typingIndicator">
+                        <div class="msg-avatar">🤖</div>
+                        <div class="msg-bubble">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="userInput" placeholder="Напиши свой вопрос..." autocomplete="off">
+                    <button id="sendBtn" class="send-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    </div> <!-- End of appContainer -->
+
+    <script src="script.js"></script>
+</body>
+</html>
