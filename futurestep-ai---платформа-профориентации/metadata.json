@@ -1,0 +1,10 @@
+{
+  "name": "FutureStep AI - Платформа профориентации",
+  "description": "RPG-платформа для осознанного выбора карьеры: инициализация талантов, дерево навыков и доступ к реальным кейсам рынка 2025.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "AI-powered career analysis",
+    "Financial aid explorer",
+    "Smart achievement portfolio"
+  ]
+}
